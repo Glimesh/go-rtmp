@@ -1,4 +1,4 @@
-module github.com/yutopp/go-rtmp
+module github.com/Glimesh/go-rtmp
 
 go 1.13
 
