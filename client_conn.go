@@ -8,6 +8,7 @@
 package rtmp
 
 import (
+	"log"
 	"net"
 	"sync"
 
@@ -27,11 +28,31 @@ type ClientConn struct {
 func newClientConnWithSetup(c net.Conn, config *ConnConfig) (*ClientConn, error) {
 	conn := newConn(c, config)
 
-	if err := handshake.HandshakeWithServer(conn.rwc, conn.rwc, &handshake.Config{
-		SkipHandshakeVerification: conn.config.SkipHandshakeVerification,
-	}); err != nil {
-		return nil, errors.Wrap(err, "Failed to handshake")
+	// if err := handshake.PlainHandshakeWithServer(conn.rwc, conn.rwc, &handshake.Config{
+	// 	SkipHandshakeVerification: conn.config.SkipHandshakeVerification,
+	// }); err != nil {
+	// 	return nil, errors.Wrap(err, "Failed to handshake")
+	// }
+	hc := &handshake.HandshakeClientSimple{}
+	log.Println("> W Handshake C0+C1.")
+	if err := hc.WriteC0C1(conn.rwc); err != nil {
+		return nil, err
 	}
+
+	if err := hc.ReadS0S1(conn.rwc); err != nil {
+		return nil, err
+	}
+	log.Println("< R Handshake S0+S1.")
+
+	log.Println("> W Handshake C2.")
+	if err := hc.WriteC2(conn.rwc); err != nil {
+		return nil, err
+	}
+
+	if err := hc.ReadS2(conn.rwc); err != nil {
+		return nil, err
+	}
+	log.Println("< R Handshake S2.")
 
 	ctrlStream, err := conn.streams.Create(ControlStreamID)
 	if err != nil {

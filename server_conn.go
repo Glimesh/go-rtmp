@@ -8,6 +8,8 @@
 package rtmp
 
 import (
+	"log"
+
 	"github.com/pkg/errors"
 
 	"github.com/yutopp/go-rtmp/handshake"
@@ -25,11 +27,27 @@ func newServerConn(conn *Conn) *serverConn {
 }
 
 func (sc *serverConn) Serve() error {
-	if err := handshake.HandshakeWithClient(sc.conn.rwc, sc.conn.rwc, &handshake.Config{
-		SkipHandshakeVerification: sc.conn.config.SkipHandshakeVerification,
-	}); err != nil {
-		return errors.Wrap(err, "Failed to handshake")
+	hs := handshake.HandshakeServer{}
+	if err := hs.ReadC0C1(sc.conn.rwc); err != nil {
+		return err
 	}
+	log.Printf("< R Handshake C0+C1.")
+
+	log.Printf("> W Handshake S0+S1+S2.")
+	if err := hs.WriteS0S1S2(sc.conn.rwc); err != nil {
+		return err
+	}
+
+	if err := hs.ReadC2(sc.conn.rwc); err != nil {
+		return err
+	}
+	log.Printf("< R Handshake C2.")
+
+	// if err := handshake.PlainHandshakeWithClient(sc.conn.rwc, sc.conn.rwc, &handshake.Config{
+	// 	SkipHandshakeVerification: sc.conn.config.SkipHandshakeVerification,
+	// }); err != nil {
+	// 	return errors.Wrap(err, "Failed to handshake")
+	// }
 
 	ctrlStream, err := sc.conn.streams.Create(ControlStreamID)
 	if err != nil {
