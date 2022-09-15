@@ -4,8 +4,8 @@ import (
 	"io"
 	"net"
 
+	"github.com/Glimesh/go-rtmp"
 	log "github.com/sirupsen/logrus"
-	"github.com/yutopp/go-rtmp"
 )
 
 func main() {

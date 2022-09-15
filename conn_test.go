@@ -13,7 +13,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/yutopp/go-rtmp/message"
+	"github.com/Glimesh/go-rtmp/message"
 )
 
 func TestConnConfig(t *testing.T) {
