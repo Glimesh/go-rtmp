@@ -8,6 +8,7 @@
 package rtmp
 
 import (
+	"fmt"
 	"sync"
 
 	"github.com/pkg/errors"
@@ -192,6 +193,11 @@ func (h *streamHandler) handleCommand(
 
 	amfDec := message.NewAMFDecoder(cmdMsg.Body, cmdMsg.Encoding)
 	bodyDecoder := message.CmdBodyDecoderFor(cmdMsg.CommandName, cmdMsg.TransactionID)
+
+	fmt.Printf("handleCommand amfDec %+v\n", amfDec)
+	fmt.Printf("handleCommand bodyDecoder %+v\n", bodyDecoder)
+	fmt.Printf("handleCommand cmdMsg %+v\n", cmdMsg)
+	fmt.Printf("handleCommand cmdMsg.Body %+v\n", cmdMsg.Body)
 
 	var value message.AMFConvertible
 	if err := bodyDecoder(cmdMsg.Body, amfDec, &value); err != nil {
