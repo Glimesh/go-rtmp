@@ -9,7 +9,6 @@ package message
 
 import (
 	"bytes"
-	"fmt"
 	"io"
 
 	"github.com/pkg/errors"
@@ -191,7 +190,7 @@ func DecodeBodyDeleteStream(_ io.Reader, d AMFDecoder, v *AMFConvertible) error 
 }
 
 func DecodeBodyPublish(_ io.Reader, d AMFDecoder, v *AMFConvertible) error {
-	fmt.Printf("DecodeBodyPublish AMFDecoder %+v\n", d)
+	// fmt.Printf("DecodeBodyPublish AMFDecoder %+v\n", d)
 	var commandObject interface{}
 	if err := d.Decode(&commandObject); err != nil {
 		return errors.Wrap(err, "Failed to decode 'publish' args[0]")
@@ -200,9 +199,12 @@ func DecodeBodyPublish(_ io.Reader, d AMFDecoder, v *AMFConvertible) error {
 	if err := d.Decode(&publishingName); err != nil {
 		return errors.Wrap(err, "Failed to decode 'publish' args[1]")
 	}
+	// fmt.Println(publishingName)
 	var publishingType string
 	if err := d.Decode(&publishingType); err != nil {
-		return errors.Wrap(err, "Failed to decode 'publish' args[2]")
+		// Since we're an RTMP server, default to live publishing type
+		publishingType = "live"
+		// return errors.Wrap(err, "Failed to decode 'publish' args[2]")
 	}
 
 	var cmd NetStreamPublish
