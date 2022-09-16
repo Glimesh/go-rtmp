@@ -18,7 +18,7 @@ import (
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 
-	"github.com/Glimesh/go-rtmp/message"
+	"github.com/yutopp/go-rtmp/message"
 )
 
 type Conn struct {

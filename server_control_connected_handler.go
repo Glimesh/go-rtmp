@@ -10,8 +10,8 @@ package rtmp
 import (
 	"github.com/pkg/errors"
 
-	"github.com/Glimesh/go-rtmp/internal"
-	"github.com/Glimesh/go-rtmp/message"
+	"github.com/yutopp/go-rtmp/internal"
+	"github.com/yutopp/go-rtmp/message"
 )
 
 var _ stateHandler = (*serverControlConnectedHandler)(nil)

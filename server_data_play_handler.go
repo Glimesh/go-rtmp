@@ -8,8 +8,8 @@
 package rtmp
 
 import (
-	"github.com/Glimesh/go-rtmp/internal"
-	"github.com/Glimesh/go-rtmp/message"
+	"github.com/yutopp/go-rtmp/internal"
+	"github.com/yutopp/go-rtmp/message"
 )
 
 var _ stateHandler = (*serverDataPlayHandler)(nil)

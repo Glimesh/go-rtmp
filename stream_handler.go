@@ -13,8 +13,8 @@ import (
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 
-	"github.com/Glimesh/go-rtmp/internal"
-	"github.com/Glimesh/go-rtmp/message"
+	"github.com/yutopp/go-rtmp/internal"
+	"github.com/yutopp/go-rtmp/message"
 )
 
 type streamState int
